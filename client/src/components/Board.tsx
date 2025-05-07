@@ -1,17 +1,21 @@
 import React from "react";
 import { BoardState } from "../types";
+import { Cell } from "./Cell";
 
 export interface BoardProps {
   boardState: BoardState
+  onCellClick: (rowIndex: number, colIndex: number) => void
 }
 
-export const Board: React.FC<BoardProps> = ({ boardState }) => (
+export const Board: React.FC<BoardProps> = ({ boardState, onCellClick }) => (
   <div className='flex flex-col gap-1'>
-  {boardState.map((row, i) => (
-    <div key={`row-${i}`} className='flex gap-1'>
-      {row.map(() => (
-        <button 
-          className='border-2 border-gray-900 w-10 h-10 cursor-pointer items-center justify-center text-2xl font-bold flex'
+  {boardState.map((row, rowIndex) => (
+    <div key={`row-${rowIndex}`} className='flex gap-1'>
+      {row.map((cell, colIndex) => (
+        <Cell
+          key={`cell-${rowIndex}-${colIndex}`}
+          value={cell}
+          onClick={() => onCellClick(rowIndex, colIndex)}
         />
       ))}
     </div>
