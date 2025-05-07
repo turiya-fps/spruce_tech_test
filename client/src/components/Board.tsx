@@ -4,7 +4,7 @@ import { Cell } from "./Cell";
 
 export interface BoardProps {
   boardState: BoardState
-  onCellClick: (rowIndex: number, colIndex: number) => void
+  onCellClick: (cellPosition) => void
 }
 
 export const Board: React.FC<BoardProps> = ({ boardState, onCellClick }) => (
@@ -15,7 +15,7 @@ export const Board: React.FC<BoardProps> = ({ boardState, onCellClick }) => (
         <Cell
           key={`cell-${rowIndex}-${colIndex}`}
           value={cell}
-          onClick={() => onCellClick(rowIndex, colIndex)}
+          onClick={() => onCellClick({ rowIndex, colIndex })}
         />
       ))}
     </div>
