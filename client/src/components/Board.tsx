@@ -15,7 +15,7 @@ export const Board: React.FC<BoardProps> = ({ boardState, onCellClick }) => (
         <Cell
           key={`cell-${rowIndex}-${colIndex}`}
           value={cell}
-          onClick={() => onCellClick({ rowIndex, colIndex })}
+          onClick={() => onCellClick([rowIndex, colIndex])}
         />
       ))}
     </div>

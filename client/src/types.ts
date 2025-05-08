@@ -7,9 +7,10 @@ export type BoardState = GameMatrix<PlayerMark>
 export type GameState = {
   boardState: BoardState
   currentPlayer: PlayerMark
+  winner?: PlayerMark
 }
 
-export type CellPosition = {
-  rowIndex: number,
-  colIndex: number,
-}
+/**
+ * numbers represent row index and column index respectively
+ */
+export type CellPosition = [number, number]
