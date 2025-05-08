@@ -1,4 +1,5 @@
-import { GameState, CellPosition, BoardState, PlayerMark } from "./types";
+import { GameState, CellCoords, BoardState, PlayerMark } from "./types";
+import { areSubArrayCoordsIncluded, getValidNegativeDiagonalStreaks, getValidPositiveDiagonalStreaks } from "./utils";
 
 export const resetGameState = (): GameState => ({
   boardState: [
@@ -11,7 +12,7 @@ export const resetGameState = (): GameState => ({
 
 export const makeMove = (
   currentGameState: GameState,
-  moveIndex: CellPosition
+  moveIndex: CellCoords
 ): GameState => {
   const [ rowIndex, colIndex ] = moveIndex
 
@@ -36,33 +37,41 @@ export const makeMove = (
   }
 }
 
-export const getPlayerPositions = (boardState: BoardState, player: PlayerMark): CellPosition[] => {
-  const currentPlayerCellPositions: CellPosition[] = []
+export const getPlayerCellPositions = (boardState: BoardState, player: PlayerMark): CellCoords[] => {
+  const currentPlayerPositions: CellCoords[] = []
   boardState.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
       if(col === player) {
-        currentPlayerCellPositions.push([rowIndex, colIndex])
+        currentPlayerPositions.push([rowIndex, colIndex])
       }
     })
   })
-  return currentPlayerCellPositions
+  return currentPlayerPositions
 }
 
 export const isGameWon = (boardState: BoardState, currentPlayer: PlayerMark): boolean => {
-  const cellPositions = getPlayerPositions(boardState, currentPlayer)
-  console.log(`Player ${currentPlayer} has: ${JSON.stringify(cellPositions)}`)
-  if (cellPositions.length < 3) return false;
-  const rows = cellPositions.map(pos => pos[0])
-  const columns = cellPositions.map(pos => pos[1])
+  const playerCellPositions = getPlayerCellPositions(boardState, currentPlayer)
+  console.log(`Player ${currentPlayer} has: ${JSON.stringify(playerCellPositions)}`)
+  if (playerCellPositions.length < 3) return false;
+  const rows = playerCellPositions.map(pos => pos[0])
+  const columns = playerCellPositions.map(pos => pos[1])
+
+  // very simple logic will suffice for 3x3 board
   for (let i = 0; i < rows.length; i++) {
     if (columns.join('') === rows[i].toString().repeat(boardState.length)) return true
     if (rows.join('') === columns[i].toString().repeat(boardState.length)) return true
   }
+  if (checkForDiagonalStreaks(playerCellPositions)) return true
   return false
 }
 
-export const getPositiveDiagonalPositions = (
-  boardDimension: number = 3,
-  targetLength: number = 3) => {
-
+export const checkForDiagonalStreaks = (
+  cellCoords: CellCoords[],
+): boolean => {
+  const validPositiveDiagonalStreaks = getValidPositiveDiagonalStreaks()[0]
+  if (areSubArrayCoordsIncluded(cellCoords, validPositiveDiagonalStreaks)) return true
+  const validNegativeDiagonalStreaks = getValidNegativeDiagonalStreaks()[0]
+  if (areSubArrayCoordsIncluded(cellCoords, validNegativeDiagonalStreaks)) return true
+  return false
 }
+

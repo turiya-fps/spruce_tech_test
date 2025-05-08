@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Board } from './components/Board'
-import { GameState, CellPosition } from './types'
+import { GameState, CellCoords } from './types'
 import { makeMove, resetGameState } from './gameLogic'
 
 export const Main = () => {
   const [gameState, setGameState] = useState<GameState>(resetGameState())
 
-  const handleCellClick = (cellPosition: CellPosition): void => {
-    setGameState(currentState => makeMove(currentState, cellPosition))
+  const handleCellClick = (cellCoords: CellCoords): void => {
+    setGameState(currentState => makeMove(currentState, cellCoords))
   }
 
   const getGameStatus = () => {

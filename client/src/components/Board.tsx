@@ -4,7 +4,7 @@ import { Cell } from "./Cell";
 
 export interface BoardProps {
   boardState: BoardState
-  onCellClick: (cellPosition) => void
+  onCellClick: (cellCoords) => void
 }
 
 export const Board: React.FC<BoardProps> = ({ boardState, onCellClick }) => (

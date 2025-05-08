@@ -13,4 +13,4 @@ export type GameState = {
 /**
  * numbers represent row index and column index respectively
  */
-export type CellPosition = [number, number]
+export type CellCoords = [number, number]
