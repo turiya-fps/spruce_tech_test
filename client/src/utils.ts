@@ -1,4 +1,4 @@
-import { CellCoords } from "./types";
+import { BoardState, CellCoords } from "./types";
 
 /**
  * Returns all valid ascending diagonal streaks for a standard 3x3 board
@@ -42,3 +42,13 @@ const areCellCoordsEqual = (pair1: CellCoords, pair2: CellCoords) => {
   return pair1[0] === pair2[0] && pair1[1] === pair2[1];
 };
 
+
+export const isBoardFull = (boardState: BoardState): boolean => {
+  let emptyCount = 0
+  boardState.forEach((row) => {
+    row.forEach((cell) => {
+      if (cell === undefined) emptyCount++
+    })
+  })
+  return emptyCount === 0
+}

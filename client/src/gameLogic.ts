@@ -1,5 +1,5 @@
 import { GameState, CellCoords, BoardState, PlayerMark } from "./types";
-import { areSubArrayCoordsIncluded, getValidNegativeDiagonalStreaks, getValidPositiveDiagonalStreaks } from "./utils";
+import { areSubArrayCoordsIncluded, getValidNegativeDiagonalStreaks, getValidPositiveDiagonalStreaks, isBoardFull } from "./utils";
 
 export const resetGameState = (): GameState => ({
   boardState: [
@@ -7,13 +7,18 @@ export const resetGameState = (): GameState => ({
     [undefined, undefined, undefined],
     [undefined, undefined, undefined]
   ],
-  currentPlayer: 'X'
+  currentPlayer: 'X',
+  gameOver: false,
 })
 
 export const makeMove = (
   currentGameState: GameState,
   moveIndex: CellCoords
 ): GameState => {
+  if (currentGameState.winner) return {
+    ...currentGameState
+  }
+
   const [ rowIndex, colIndex ] = moveIndex
 
   if(currentGameState.boardState[rowIndex][colIndex] !== undefined) return currentGameState
@@ -29,11 +34,18 @@ export const makeMove = (
     }
   }
 
+  if (isBoardFull(nextBoardState)) return {
+    ...currentGameState,
+    boardState: nextBoardState,
+    gameOver: true
+  }
+
   const nextPlayer = currentGameState.currentPlayer === 'X' ? 'O' : 'X'
 
   return {
     boardState: nextBoardState,
-    currentPlayer: nextPlayer
+    currentPlayer: nextPlayer,
+    gameOver: false
   }
 }
 

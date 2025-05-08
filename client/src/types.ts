@@ -8,6 +8,7 @@ export type GameState = {
   boardState: BoardState
   currentPlayer: PlayerMark
   winner?: PlayerMark
+  gameOver: boolean
 }
 
 /**
